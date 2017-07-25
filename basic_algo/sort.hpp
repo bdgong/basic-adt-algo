@@ -374,7 +374,7 @@ const std::pair<int, int> minmax(const int arr[], const int from, const int to)
  * Counting sort given arr.
  *
  *  - ascending
- *  - arr should contains positive number 
+ *  - assume arr contains positive number 
  * */
 void CountSort(int arr[], const int from, const int to) 
 {
@@ -433,6 +433,7 @@ const int maxDigits(const int arr[], const int from, const int to)
  *
  *  - ascending
  *  - element radix=10
+ *  - assume arr contains positive number 
  * */
 void RadixSort(int arr[], const int from, const int to)
 {
@@ -455,6 +456,30 @@ void RadixSort(int arr[], const int from, const int to)
             }
         }
         //PrintAll(arr, from, to);
+    }
+}
+
+/*
+ * Bucket sort given arry arr.
+ *
+ *  - ascending
+ *  - assume arr contains positive number 
+ * */
+void BucketSort(int arr[], const int from, const int to)
+{
+    auto mm = minmax(arr, from, to);
+    const int k = mm.second - mm.first + 1;
+    std::vector<std::queue<int>> bucket;
+    bucket.resize(k);
+    for(int i=from; i<to ; ++i) {
+        bucket[arr[i]-mm.first].push(arr[i]);
+    }
+
+    for(int i=0, next=from; i<k ; ++i) {
+        while(!bucket[i].empty()) {
+            arr[next++] = bucket[i].front();
+            bucket[i].pop();
+        }
     }
 }
 

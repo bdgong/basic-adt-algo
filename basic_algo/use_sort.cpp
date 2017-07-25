@@ -63,7 +63,10 @@ int main()
     //testSpecialSortAlgo(CountSort, "CountSort: ");
     
     /// test radix sort
-    testSpecialSortAlgo(RadixSort, "RadixSort: ");
+    //testSpecialSortAlgo(RadixSort, "RadixSort: ");
+    
+    /// test radix sort
+    testSpecialSortAlgo(BucketSort, "BucketSort: ");
     
     return 0;
 }
