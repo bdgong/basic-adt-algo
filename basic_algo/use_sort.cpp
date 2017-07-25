@@ -30,6 +30,12 @@ int main()
         algo(arr4, 0, len4);
         PrintAll(arr4, len4); 
     };
+    auto testSpecialSortAlgo = [&](void (*algo)(int[],int,int), const char *msg) {
+        std::cout << msg << std::endl;
+
+        algo(arr4, 0, len4);
+        PrintAll(arr4, len4); 
+    };
 
     /// test insert sort
     //testSortAlgorithm(InsertSort, "InsertSort: ");
@@ -51,8 +57,14 @@ int main()
     /// test merge sort
     //testSortAlgorithm(MergeSort, "MergeSort: ");
     //testSortAlgorithm(MergeSortByIteration, "MergeSortByIteration: ");
-    testSortAlgorithm(MergeSortByIteration2, "MergeSortByIteration2: ");
+    //testSortAlgorithm(MergeSortByIteration2, "MergeSortByIteration2: ");
 
+    /// test count sort
+    //testSpecialSortAlgo(CountSort, "CountSort: ");
+    
+    /// test radix sort
+    testSpecialSortAlgo(RadixSort, "RadixSort: ");
+    
     return 0;
 }
 

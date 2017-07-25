@@ -23,6 +23,7 @@
  * */
 #include <iostream>
 #include <stack>
+#include <queue>
 #include "print.hpp"
 
 /*
@@ -348,6 +349,112 @@ void MergeSortByIteration2(int arr[], const int from, const int to)
         else {}
 
         step *= 2;
+    }
+}
+
+/*
+ * Return a pair of min,max element of array arr in range from ~ to.
+ * */
+const std::pair<int, int> minmax(const int arr[], const int from, const int to)
+{
+    int iMin=from, iMax=from;
+    for(int i=from; i<to ; ++i) {
+        if(arr[i] < arr[iMin]) {
+            iMin = i;
+        }
+        else if(arr[i] > arr[iMax]) {
+            iMax = i;
+        }
+        else {}
+    }
+    return std::make_pair(arr[iMin], arr[iMax]);
+}
+
+/*
+ * Counting sort given arr.
+ *
+ *  - ascending
+ *  - arr should contains positive number 
+ * */
+void CountSort(int arr[], const int from, const int to) 
+{
+    auto mm = minmax(arr, from, to);
+    //std::cout << mm.first << " " << mm.second << std::endl;
+    int k = mm.second - mm.first + 1;
+    int len = to - from;
+    int *arrCount = new int[k];
+    int *arrCopy = new int[len];
+
+    int i;
+    for(i=0; i<k ; ++i)
+        arrCount[i] = 0;
+    for(i=from; i<to ; ++i)
+        arrCount[arr[i] - mm.first] += 1;      // arrCount now contains the number of elements equal to i.
+    for(i=1; i<k ; ++i)
+        arrCount[i] += arrCount[i-1];          // arrCount now contains the number of elements less than or equal to i.
+    for(i=to-1; i>=from ; --i) {
+        arrCopy[arrCount[arr[i] - mm.first] - 1] = arr[i];
+        arrCount[arr[i] - mm.first] -= 1;
+    }
+
+    //PrintAll(arrCopy, 0, len);
+    for(i=0; i<len ; ++i)
+        arr[from+i] = arrCopy[i];
+
+    delete [] arrCount;
+    delete [] arrCopy;
+}
+
+/*
+ * Get max digits in array arr[from, to).
+ *
+ *  - assume elements are positive
+ * */
+const int maxDigits(const int arr[], const int from, const int to)
+{
+    int maxD = 0;
+    for(int i=from; i<to ; ++i) {
+        int elem = arr[i];
+        int d = 0;
+        while(elem > 0) {
+            ++d;
+            elem /= 10;
+        }
+        if(d > maxD) {
+            maxD = d;
+        }
+        else {}
+    }
+    return maxD;
+}
+
+/*
+ * Radix sort given array arr.
+ *
+ *  - ascending
+ *  - element radix=10
+ * */
+void RadixSort(int arr[], const int from, const int to)
+{
+    const int radix = 10;
+    int d = maxDigits(arr, from, to);
+    //std::cout << "maxDigits=" << d << std::endl;
+    int divide = 1;
+    std::queue<int> bucket[radix];
+    for(int k=1; k<=d ; ++k, divide*=radix) {
+        // arrange
+        for(int i=from; i<to ; ++i) {
+            int pos = (arr[i] / divide) % radix;     // find bucket position for this element
+            bucket[pos].push(arr[i]);
+        }
+        // collect
+        for(int next=from, i=0; i<radix ; ++i) {
+            while(!bucket[i].empty()) {
+                arr[next++] = bucket[i].front();
+                bucket[i].pop();
+            }
+        }
+        //PrintAll(arr, from, to);
     }
 }
 
