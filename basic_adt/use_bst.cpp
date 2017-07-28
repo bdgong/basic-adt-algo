@@ -36,11 +36,23 @@ int main()
     cout << "Delete 17:";
     cout << (bst.remove(17) ? "Removed." : "Not exists.") << endl; 
 
+    cout << "In order traversal:" << endl;
+    bst.inOrderTraversal();
+    cout << endl;
+
     cout << "Delete 11:";
     cout << (bst.remove(11) ? "Removed." : "Not exists.") << endl; 
 
+    cout << "In order traversal:" << endl;
+    bst.inOrderTraversal();
+    cout << endl;
+
     cout << "Delete 5:";
     cout << (bst.remove(5) ? "Removed." : "Not exists.") << endl; 
+
+    cout << "In order traversal:" << endl;
+    bst.inOrderTraversal();
+    cout << endl;
 
     cout << endl;
 

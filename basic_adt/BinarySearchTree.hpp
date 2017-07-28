@@ -1,3 +1,9 @@
+/*
+ * Notice:
+ *
+ * Since the inner node is pointer type, the pointer-to-pointer type must be used
+ * for delete and insert operation.
+ * */
 #include <iostream>
 #include "util.hpp"
 
@@ -55,8 +61,8 @@ namespace bdgong
              * Find given element, if found, return the node, otherwise, nullptr is
              * returned.
              * */
-            const Node * find(const T &elem) const {
-                return search(root, elem);
+            const PNode * find(const T &elem) const {
+                return search(&root, elem);
             }
 
             /*
@@ -64,12 +70,12 @@ namespace bdgong
              * false.
              * */
             bool remove(const T &elem) {
-                Node *node = const_cast<Node*>(find(elem));
+                PNode *node = const_cast<PNode*>(find(elem));
                 if(node == nullptr) {
                     return false;
                 }
                 else {
-                    return remove(&node);
+                    return removeNode(node);
                 }
             }
 
@@ -89,7 +95,7 @@ namespace bdgong
             CBinarySearchTree(const CBinarySearchTree&);
             CBinarySearchTree & operator=(const CBinarySearchTree&);
 
-            const bool insert(Node **parent, const T &elem) {
+            const bool insert(PNode *parent, const T &elem) {
                 Node *node = new Node;
                 node->val = elem;
                 node->lChild = nullptr;
@@ -112,32 +118,32 @@ namespace bdgong
                 }
             }
 
-            const Node * search(const Node *parent, const T &elem) const {
-                if(parent == nullptr) {
+            const PNode * search(const PNode *parent, const T &elem) const {
+                if(*parent == nullptr) {
                     return nullptr;
                 }
-                else if(parent->val == elem) {
+                else if((*parent)->val == elem) {
                     return parent;
                 }
-                else if(parent->val > elem) {
-                    return search(parent->lChild, elem);
+                else if((*parent)->val > elem) {
+                    return search(&(*parent)->lChild, elem);
                 }
                 else {
-                    return search(parent->rChild, elem);
+                    return search(&(*parent)->rChild, elem);
                 }
             }
 
-            bool remove(PNode *pNode) {
+            bool removeNode(PNode *pNode) {
                 if((*pNode)->lChild == nullptr && (*pNode)->rChild == nullptr) {  // 左右孩子均空
                     delete *pNode;
                     *pNode = nullptr;
                 }
-                else if((*pNode)->lChild != nullptr) {   // 左孩子不空
+                else if((*pNode)->rChild == nullptr) {   // 左孩子不空
                     PNode p = *pNode;
                     *pNode = (*pNode)->lChild;
                     delete p;
                 }
-                else if((*pNode)->rChild != nullptr) {   // 右孩子不空
+                else if((*pNode)->lChild == nullptr) {   // 右孩子不空
                     PNode p = *pNode;
                     *pNode = (*pNode)->rChild;
                     delete p;
@@ -145,7 +151,7 @@ namespace bdgong
                 else {  // 左右孩子均不空，将前面一个元素移动到当前位置，重接被移动元素左（右）孩子
                     PNode p = *pNode;
                     PNode t = p->lChild;
-                    while(t->rChild) {
+                    while(t->rChild != nullptr) {
                         p = t;
                         t = t->rChild;
                     }   // 找到刚好比待删除元素小的结点
