@@ -97,6 +97,23 @@ void SelectSort(int arr[], const int from, const int to)
 }
 
 /*
+ * Partition on the MIT Introduction to Algorithms.
+ * */
+int Partition(int arr[], const int from, const int to)
+{
+    int x = arr[to-1];
+    int i = from - 1;
+    for(int j=from ; j<to ; ++j) {
+        if(arr[j] < x) {
+            ++i;
+            swap(&arr[i], &arr[j]);
+        }
+    }
+    swap(&arr[i+1], &arr[to-1]);
+    return i+1;
+}
+
+/*
  * Quick sort partition.
  *
  * @return The mid position.
@@ -127,7 +144,8 @@ int QuickSortPartition(int arr[], const int from, const int to)
 void QuickSort(int arr[], const int from, const int to)
 {
     if(from < to) {
-        int mid = QuickSortPartition(arr, from, to);
+        //int mid = QuickSortPartition(arr, from, to);
+        int mid = Partition(arr, from, to);
         QuickSort(arr, from, mid);
         QuickSort(arr, mid+1, to);
     }

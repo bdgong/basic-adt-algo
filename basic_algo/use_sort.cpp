@@ -47,7 +47,7 @@ int main()
     //testSortAlgorithm(SelectSort, "SelectSort: ");
 
     /// test quick sort
-    //testSortAlgorithm(QuickSort, "QuickSort: ");
+    testSortAlgorithm(QuickSort, "QuickSort: ");
     /// test quick sort by iteration
     //testSortAlgorithm(QuickSortByIteration, "QuickSortByIteration: ");
 
@@ -66,7 +66,7 @@ int main()
     //testSpecialSortAlgo(RadixSort, "RadixSort: ");
     
     /// test radix sort
-    testSpecialSortAlgo(BucketSort, "BucketSort: ");
+    //testSpecialSortAlgo(BucketSort, "BucketSort: ");
     
     return 0;
 }
